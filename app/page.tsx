@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react"
 
+import TradingViewWidget from "@/components/TradingViewWidget"
+import TradingViewTicker from "@/components/TradingViewTicker"
+
 type Quote = {
   c: number
   d: number
@@ -12,7 +15,7 @@ export default function Home() {
   const [quote, setQuote] = useState<Quote | null>(null)
 
   async function fetchQuote() {
-    const res = await fetch("/api/quote?symbol=AAPL")
+    const res = await fetch("/api/quote?symbol=USDJPY")
 
     const data = await res.json()
 
@@ -28,30 +31,20 @@ export default function Home() {
   }, [])
 
   return (
-    <main className="p-8">
-      <div className="max-w-sm rounded-2xl border p-4 shadow">
-        <h1 className="text-xl font-bold">
-          Apple
-        </h1>
-
-        {quote && (
-          <>
-            <p className="text-3xl mt-2">
-              {quote.c}
-            </p>
-
-            <p
-              className={
-                quote.dp >= 0
-                  ? "text-red-500"
-                  : "text-blue-500"
-              }
-            >
-              {quote.dp.toFixed(2)}%
-            </p>
-          </>
-        )}
-      </div>
-    </main>
+  <main className="p-8">
+    <TradingViewTicker symbol="FX:USDJPY" />
+    <TradingViewWidget
+      symbol="FX:USDJPY"
+      title="ドル円"
+    />
+    <TradingViewWidget
+      symbol="TVC:USOIL"
+      title="原油"
+    />
+    <TradingViewWidget
+      symbol="OANDA:XAUUSD"
+      title="金"
+    />
+  </main>
   )
 }
